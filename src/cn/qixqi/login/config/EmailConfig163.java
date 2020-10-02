@@ -1,11 +1,11 @@
 package cn.qixqi.login.config;
 
-// zhengxiang@qixqi.club
-public class EmailConfig {
+// zhengxiang4056@163.com
+public class EmailConfig163 {
 	// 发件人邮箱
-	public static final String ACCOUNT = "zhengxiang@qixqi.club";
+	public static final String ACCOUNT = "zhengxiang4056@163.com";
 	// 发件人邮箱密码
-	public static final String PASSWORD = "Aa17411419150580";
+	public static final String PASSWORD = "a17411419150580";
 	// 发件人昵称
 	public static final String SEND_NICKNAME = "qixqi";
 	// 收件人昵称
@@ -19,7 +19,7 @@ public class EmailConfig {
 	
 	
 	// 发件人SMTP服务器地址
-	public static final String HOST = "smtp.exmail.qq.com";
+	public static final String HOST = "smtp.163.com";
 	
 	// 发件人端口
 	public static final String PORT = "465";	// SSL
