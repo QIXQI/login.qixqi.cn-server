@@ -73,6 +73,12 @@ public class ProxyUser implements User {
 	}
 
 	@Override
+	public int resetPass(String code, String email, String password) {
+		// TODO Auto-generated method stub
+		return realUser.resetPass(code, email, password);		// 游客、第三方用户（未绑定本站）、本站用户都可
+	}
+
+	@Override
 	public String getAvatar(int uid) {
 		// TODO Auto-generated method stub
 		if (priority >= Priorities.VISITOR) {

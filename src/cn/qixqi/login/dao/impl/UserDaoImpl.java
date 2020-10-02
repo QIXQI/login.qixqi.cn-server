@@ -2,6 +2,7 @@ package cn.qixqi.login.dao.impl;
 
 import java.util.Map;
 import java.util.Date;
+import java.util.HashMap;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -74,7 +75,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public int resetPass(int uid, String oldPass, String newPass) {
+	public int updatePass(int uid, String oldPass, String newPass) {
 		// TODO Auto-generated method stub
 		Connection conn = getConnection();
 		PreparedStatement pst = null;
@@ -96,6 +97,16 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		}
 		closeAll(conn, pst, null);
 		return status;
+	}
+
+	@Override
+	public int resetPass(String email, String password) {
+		// TODO Auto-generated method stub
+		String table = "user";
+		String whereSql = "where email = '" + email + "'";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("password", password);
+		return executeUpdate(table, whereSql, map);
 	}
 
 	@Override
@@ -234,4 +245,27 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		return user;
 	}
 
+	@Override
+	public boolean isExist(String email) {
+		// TODO Auto-generated method stub
+		Connection conn = getConnection();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		boolean result = true;
+		String sql = "select uid from user where email = ?";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, email);
+			rs = pst.executeQuery();
+			if (!rs.next()) {
+				result = false;
+				this.logger.error("邮箱email=" + email + "还未注册");
+			}
+		} catch(SQLException se) {
+			result = false;
+			this.logger.error("邮箱email=" + email + "是否注册，查取失败：" + se.getMessage());
+		}
+		closeAll(conn, pst, rs);
+		return result;
+	}
 }

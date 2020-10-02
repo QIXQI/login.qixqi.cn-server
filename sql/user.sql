@@ -25,6 +25,11 @@ create table if not exists `user_status`(
 )ENGINE=InnoDB default charset=utf8;
 
 
+insert into user_status (status_id, status) values (0, "离线");
+insert into user_status (status_id, status) values (1, "在线");
+
+
+
 -- 创建登录日志表 user_login_log
 create table if not exists `user_login_log`(
 	`uid` int(11) not null,
@@ -33,4 +38,12 @@ create table if not exists `user_login_log`(
 	`login_ip`	varchar(255),	-- 登录ip
 	foreign key(`uid`) references user(`uid`)
 	on delete cascade on update cascade
+)ENGINE=InnoDB default charset=utf8;
+
+
+-- 创建用户找回密码验证码表 user_reset_code
+create table if not exists `user_reset_code`(
+	`email` varchar(255) not null,
+	`code` char(6) not null,
+	`send_time` timestamp default CURRENT_TIMESTAMP
 )ENGINE=InnoDB default charset=utf8;

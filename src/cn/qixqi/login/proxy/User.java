@@ -26,6 +26,9 @@ public interface User {
 	// 更新密码
 	public int updatePass(int uid, String oldPass, String newPass);
 	
+	// 重设密码
+	public int resetPass(String code, String email, String password);
+	
 	// 用户用户头像
 	public String getAvatar(int uid);
 	

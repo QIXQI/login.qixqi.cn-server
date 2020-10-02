@@ -1,5 +1,6 @@
 package cn.qixqi.login.proxy;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -8,15 +9,22 @@ import org.apache.logging.log4j.Logger;
 
 import cn.qixqi.login.entity.LoginLog;
 import cn.qixqi.login.entity.QixqiUser;
+import cn.qixqi.login.entity.ResetCode;
 import cn.qixqi.login.dao.UserDao;
 import cn.qixqi.login.dao.LoginLogDao;
+import cn.qixqi.login.dao.ResetCodeDao;
 import cn.qixqi.login.dao.impl.UserDaoImpl;
 import cn.qixqi.login.dao.impl.LoginLogDaoImpl;
+import cn.qixqi.login.dao.impl.ResetCodeDaoImpl;
+import cn.qixqi.login.util.TimeUtil;
 
 public class RealUser implements User {
 	private Logger logger = LogManager.getLogger(RealUser.class.getName());
+	private int INTERVAL = 600;			// 验证码有效时长：600秒
+	
 	private UserDao ud = new UserDaoImpl();
 	private LoginLogDao ld = new LoginLogDaoImpl();
+	private ResetCodeDao rd = new ResetCodeDaoImpl();
 
 	@Override
 	public int userRegister(QixqiUser user) {
@@ -90,7 +98,45 @@ public class RealUser implements User {
 	@Override
 	public int updatePass(int uid, String oldPass, String newPass) {
 		// TODO Auto-generated method stub
-		return ud.resetPass(uid, oldPass, newPass);
+		return ud.updatePass(uid, oldPass, newPass);
+	}
+
+	@Override
+	public int resetPass(String code, String email, String password) {
+		// TODO Auto-generated method stub
+		// 判断是否为空
+		if (code == null || email == null || password == null) {
+			this.logger.error("验证码、邮箱或密码为空");
+			return 200;
+		}
+		// 查找邮箱最新验证码
+		ResetCode resetCode = rd.get(email);
+		int status = 100;
+		if (resetCode == null) {
+			// 未找到最新验证码
+			status = 203;
+			this.logger.error("邮箱email=" + email + "未找到最新验证码");
+		} else if(!resetCode.getCode().equals(code)){
+			// 验证码不匹配
+			status = 204;
+			this.logger.error("邮箱email=" + email + "最新验证码不匹配");
+		} else if (!TimeUtil.isValid(resetCode.getSendTime(), INTERVAL)) {
+			// 验证码过期
+			status = 205;
+			this.logger.error("邮箱email=" + email + "最新验证码已过期");
+		} else {
+			// 验证码匹配且有效，重设密码
+			status = ud.resetPass(email, password);
+		}
+		
+		// 判断是否重设成功
+		if (status == 100) {
+			this.logger.info("用户email=" + email + "重设密码成功");
+		} else {
+			this.logger.info("用户email=" + email + "重设密码失败");
+		}
+		
+		return status;
 	}
 
 	@Override
