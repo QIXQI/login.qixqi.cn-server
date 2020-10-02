@@ -41,13 +41,17 @@ public class EmailUtil {
 		props.setProperty("mail.transport.protocol", EmailConfig.PROTOCOL);
 		// SMTP 服务器地址
 		props.setProperty("mail.smtp.host", EmailConfig.HOST);
+		// 服务器端口
+		props.setProperty("mail.smtp.port", EmailConfig.PORT);
+		// SSL
+		props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		// 请求认证
 		props.setProperty("mail.smtp.auth", EmailConfig.AUTHENTICATION);
 		
 		// 定义邮件程序所需的环境信息
 		Session session = Session.getInstance(props);
 		// debug 模式，可以发送详细的日志
-		session.setDebug(true);
+		// session.setDebug(true);
 		
 		// 生成验证码
 		String code = generateCode();

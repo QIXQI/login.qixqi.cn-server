@@ -20,6 +20,9 @@ public class EmailConfig {
 	// 发件人SMTP服务器地址
 	public static final String HOST = "smtp.163.com";
 	
+	// 发件人端口
+	public static final String PORT = "465";	// SSL
+	
 	// 使用协议
 	public static final String PROTOCOL = "smtp";
 	
