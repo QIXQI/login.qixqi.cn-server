@@ -51,7 +51,7 @@ public class EmailUtil {
 		// 定义邮件程序所需的环境信息
 		Session session = Session.getInstance(props);
 		// debug 模式，可以发送详细的日志
-		session.setDebug(true);
+		// session.setDebug(true);
 		
 		// 生成验证码
 		String code = generateCode();

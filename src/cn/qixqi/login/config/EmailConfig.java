@@ -1,9 +1,9 @@
 package cn.qixqi.login.config;
 
-// zhengxiang@qixqi.club
+// zhengxiang@qixqi.cn
 public class EmailConfig {
 	// 发件人邮箱
-	public static final String ACCOUNT = "zhengxiang@qixqi.club";
+	public static final String ACCOUNT = "zhengxiang@qixqi.cn";
 	// 发件人邮箱密码
 	public static final String PASSWORD = "Aa17411419150580";
 	// 发件人昵称
